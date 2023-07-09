@@ -22,23 +22,7 @@ This will create a Docker network named `my-network`.
 
 ## Step 2: Build and Run the Application Containers
 
-Assuming your application is built using Node.js, you can use the following steps to build and run the application containers:
-
-1. Create a new file called `Dockerfile-app` in the root directory of your application, and add the following content:
-
-    ```Dockerfile
-    FROM node:16
-    WORKDIR /usr/src/app
-    COPY package.json ./
-    RUN npm install
-    COPY . .
-    EXPOSE 8080
-    CMD [ "node", "app.js" ]
-    ```
-
-    This `Dockerfile` uses the official Node.js Docker image, sets the working directory to `/usr/src/app`, copies the `package.json` file and installs the dependencies using `npm install`, copies the application code, exposes port `8080`, and specifies the command to start the application.
-
-2. In the root directory of your application, build the Docker image by running the following command:
+1. In the root directory of your application, build the Docker image by running the following command:
 
     ```bash
     docker build -t my-app .
@@ -46,7 +30,7 @@ Assuming your application is built using Node.js, you can use the following step
 
     This command builds the Docker image using the Dockerfile and tags it as `my-app`.
 
-3. Start three containers for your application using the following commands:
+2. Start three containers for your application using the following commands:
 
     ```bash
     docker run --name app1 --network my-network -p 8080:8080 -d my-app
