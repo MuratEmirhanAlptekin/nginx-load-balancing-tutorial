@@ -22,7 +22,7 @@ This will create a Docker network named `my-network`.
 
 ## Step 2: Build and Run the Application Containers
 
-1. In the root directory of your application, build the Docker image by running the following command:
+1. In the express-app directory of your application, build the Docker image by running the following command:
 
     ```bash
     docker build -t my-app .
