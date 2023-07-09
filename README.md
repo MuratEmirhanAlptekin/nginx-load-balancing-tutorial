@@ -41,28 +41,26 @@ Assuming your application is built using Node.js, you can use the following step
 2. In the root directory of your application, build the Docker image by running the following command:
 
     ```bash
-    docker build -t my-app -f Dockerfile-app .
+    docker build -t my-app .
     ```
 
-    This command builds the Docker image using the `Dockerfile-app` and tags it as `my-app`.
+    This command builds the Docker image using the Dockerfile and tags it as `my-app`.
 
 3. Start three containers for your application using the following commands:
 
     ```bash
     docker run --name app1 --network my-network -p 8080:8080 -d my-app
-    docker run --name app2 --network my-network -p 8081:8080 -d my-app
-    docker run --name app3 --network my-network -p 8082:8080 -d my-app
+    docker run --name app2 --network my-network -p 8080:8080 -d my-app
+    docker run --name app3 --network my-network -p 8080:8080 -d my-app
     ```
 
-    These commands start three containers named `app1`, `app2`, and `app3` respectively, exposing ports `8080`, `8081`, and `8082` on the host and connecting them to the `my-network` Docker network. Each container runs your application.
+    These commands start three containers named `app1`, `app2`, and `app3` respectively, exposing ports `8080`, `8080`, and `8080` on the host and connecting them to the `my-network` Docker network. Each container runs your application.
 
 By following these steps, you build and run three instances of your application in separate Docker containers. Nginx, acting as the load balancer, will distribute incoming traffic among these containers.
 
-Please make sure to update the necessary parts in the README.md file accordingly to reflect these changes in the tutorial.
-
 ## Step 3: Configure Nginx
 
-Create a new file called `nginx.conf` in a directory of your choice, and add the following configuration:
+Use the file default.conf with the following configuration:
 
 ```nginx
 http {
@@ -85,14 +83,10 @@ In this configuration, the `upstream` block defines the three application contai
 
 ## Step 4: Build and Run the Nginx Container
 
-Create a new file called `Dockerfile` in the same directory as the `nginx.conf` file, and add the following content:
-
 ```Dockerfile
-FROM nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM nginx:latest
+COPY default.conf /etc/nginx/conf.d/default.conf
 ```
-
-This `Dockerfile` uses the official Nginx Docker image and copies the `nginx.conf` file into the container's `/etc/nginx` directory.
 
 Build the Docker image by running the following command in the same directory as the `Dockerfile`:
 
@@ -110,12 +104,10 @@ This command starts a container named `my-nginx`, connects it to the `my-network
 
 ## Step 5: Verify the Load Balancing
 
-With the Nginx container and application containers running, you can test the load balancing. Open a web browser or use a tool like `curl` to send requests to `http://localhost`. Each request should be forwarded to one of the application containers in a round-robin fashion.
+With the Nginx container and application containers running, you can test the load balancing. Open a web browser to send requests to `http://localhost`. Each request should be forwarded to one of the application containers in a round-robin fashion.
 
 Congratulations! You have successfully set up Nginx as a load balancer between three Docker containers running your application.
 
 ## Conclusion
 
-This tutorial provided a step-by-step guide to configuring Nginx as a load balancer in a Docker environment. By following these instructions, you can easily distribute incoming traffic among multiple application containers, improving scalability and availability for your applications. Feel free to customize the configuration further to meet your specific requirements.
-
-For more advanced configurations and optimizations, refer to the official Nginx documentation: [https://nginx.org/en/docs/](https://nginx.org/en/docs/).
+This tutorial provided a step-by-step guide to configuring Nginx as a load balancer in a Docker environment. By following these instructions, you can distribute incoming traffic among multiple application containers.
